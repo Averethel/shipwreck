@@ -1,12 +1,12 @@
-import { ChakraProvider } from '@chakra-ui/react'
-import type { AppProps } from 'next/app'
+import type { AppProps } from 'next/app';
+import { ChakraProvider } from '@chakra-ui/react';
 
 function Shipwreck({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
       <Component {...pageProps} />
     </ChakraProvider>
-  )
+  );
 }
 
-export default Shipwreck
+export default Shipwreck;
