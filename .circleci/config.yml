@@ -1,0 +1,75 @@
+version: 2.1
+
+docker: &DOCKER_NODE
+  docker:
+    - image: cimg/node:16.15.0
+
+jobs:
+  install:
+    <<: *DOCKER_NODE
+    resource_class: small
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - v1-npm-{{ .Branch }}-
+            - v1-npm-
+      - run: CYPRESS_INSTALL_BINARY=0 npm ci
+      - run: npm ls
+      - save_cache:
+          key: v1-npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.npm
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
+  build:
+    <<: *DOCKER_NODE
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: npm run build
+  unit:
+    <<: *DOCKER_NODE
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          command: npm run test -- --runInBand
+          no_output_timeout: 3m
+  lint:
+    <<: *DOCKER_NODE
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: npm run lint
+  typecheck:
+    <<: *DOCKER_NODE
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: npm run typecheck
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - install
+      - build:
+          requires:
+            - install
+      - unit:
+          requires:
+            - install
+      - lint:
+          requires:
+            - install
+      - typecheck:
+          requires:
+            - install
