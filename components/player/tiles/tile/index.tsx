@@ -10,9 +10,15 @@ type Props = {
   value: TileValue;
   color: 'blue' | 'red' | 'green' | 'yellow' | 'purple' | 'black';
   isInitiallyFlipped?: boolean;
+  flippable?: boolean;
 };
 
-const Tile: FC<Props> = ({ value, color, isInitiallyFlipped = false }) => {
+const Tile: FC<Props> = ({
+  value,
+  color,
+  isInitiallyFlipped = false,
+  flipable = true,
+}) => {
   const [isFlipped, { toggle }] = useBoolean(isInitiallyFlipped);
 
   return (
@@ -23,7 +29,7 @@ const Tile: FC<Props> = ({ value, color, isInitiallyFlipped = false }) => {
       borderRadius="sm"
       bg={color === 'black' ? 'black' : `${color}.400`}
       color={color === 'black' ? 'yellow.300' : 'gray.800'}
-      onClick={toggle}
+      {...(flippable ? { onClick: toggle } : {})}
     >
       <Flex
         border="2px solid"
