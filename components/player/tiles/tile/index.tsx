@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import { Box, Flex, ScaleFade, useBoolean } from '@chakra-ui/react';
 
-import { TileValue } from '@lib/game/types';
+import { FateValue } from '@lib/game/types';
 
 import Reverse from './reverse';
 import Content from './content';
 
 type Props = {
-  value: TileValue;
+  value: FateValue;
   color: 'blue' | 'red' | 'green' | 'yellow' | 'purple' | 'black';
   isInitiallyFlipped?: boolean;
   flippable?: boolean;
@@ -17,7 +17,7 @@ const Tile: FC<Props> = ({
   value,
   color,
   isInitiallyFlipped = false,
-  flipable = true,
+  flippable = true,
 }) => {
   const [isFlipped, { toggle }] = useBoolean(isInitiallyFlipped);
 

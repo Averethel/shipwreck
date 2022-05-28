@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 
-import { TileValue } from '@lib/game/types';
+import { FateValue } from '@lib/game/types';
 
 import Content from '../content';
 
-const renderWrapper = ({ value = 1 as TileValue }) =>
+const renderWrapper = ({ value = 1 as FateValue }) =>
   render(<Content value={value} />);
 
 describe('<Content />', () => {

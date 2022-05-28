@@ -1,15 +1,14 @@
 import { FC } from 'react';
-import { Grid, GridItem, VStack } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 
-import { TileValue } from '@lib/game/types';
+import { getFateTier } from '@lib/game/utils';
+import { FateValue } from '@lib/game/types';
 
-import Diamond from './diamond';
+import Tier from './tier';
 
 type Props = {
-  value: TileValue;
+  value: FateValue;
 };
-
-const diamonds = [1, 1, 1, 2, 2, 2, 3];
 
 const Content: FC<Props> = ({ value }) => {
   return (
@@ -18,11 +17,7 @@ const Content: FC<Props> = ({ value }) => {
         {value}
       </GridItem>
       <GridItem colStart={3} alignItems="center" display="flex">
-        <VStack spacing="3px">
-          {Array.from({ length: diamonds[value - 1] }, (_, i) => (
-            <Diamond key={`diamond-${i}`} size="sm" variant="full" />
-          ))}
-        </VStack>
+        <Tier tier={getFateTier(value)} />
       </GridItem>
     </Grid>
   );

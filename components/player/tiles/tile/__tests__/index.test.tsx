@@ -1,11 +1,11 @@
 import userEvent from '@testing-library/user-event';
 import { act, render, screen, waitFor } from '@testing-library/react';
 
-import { TileValue } from '@lib/game/types';
+import { FateValue } from '@lib/game/types';
 
 import Tile from '..';
 
-const renderWrapper = ({ value = 1 as TileValue, flipped = false } = {}) =>
+const renderWrapper = ({ value = 1 as FateValue, flipped = false } = {}) =>
   render(<Tile value={value} color="red" isInitiallyFlipped={flipped} />);
 
 describe('<Tile />', () => {
