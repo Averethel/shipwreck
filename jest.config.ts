@@ -8,10 +8,11 @@ const config = {
   setupFilesAfterEnv: ['<rootDir>/.jest/setup/jestDomExpects.ts'],
   testEnvironment: 'jsdom',
   globals: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     'ts-jest': {
-      tsconfig: 'tsconfig.test.json'
-    }
-  }
+      tsconfig: 'tsconfig.test.json',
+    },
+  },
 };
 
 export default config;
