@@ -9,10 +9,11 @@ import Content from './content';
 type Props = {
   value: TileValue;
   color: 'blue' | 'red' | 'green' | 'yellow' | 'purple' | 'black';
+  isInitiallyFlipped?: boolean;
 };
 
-const Tile: FC<Props> = ({ value, color }) => {
-  const [isFlipped, { toggle }] = useBoolean(false);
+const Tile: FC<Props> = ({ value, color, isInitiallyFlipped = false }) => {
+  const [isFlipped, { toggle }] = useBoolean(isInitiallyFlipped);
 
   return (
     <Box

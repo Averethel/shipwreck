@@ -5,8 +5,8 @@ import { TileValue } from '@lib/game/types';
 
 import Tile from '..';
 
-const renderWrapper = ({ value = 1 as TileValue } = {}) =>
-  render(<Tile value={value} color="red" />);
+const renderWrapper = ({ value = 1 as TileValue, flipped = false } = {}) =>
+  render(<Tile value={value} color="red" isInitiallyFlipped={flipped} />);
 
 describe('<Tile />', () => {
   it('flips', () => {
@@ -20,5 +20,11 @@ describe('<Tile />', () => {
     return waitFor(() => {
       expect(screen.getAllByTestId('diamond')).toHaveLength(4);
     });
+  });
+
+  it('can be flipped initially', () => {
+    renderWrapper({ value: 2, flipped: true });
+
+    expect(screen.getAllByTestId('diamond')).toHaveLength(4);
   });
 });
