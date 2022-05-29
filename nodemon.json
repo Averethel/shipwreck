@@ -1,0 +1,6 @@
+{
+  "watch": ["pages/api/"],
+  "exec": "next dev",
+  "ext": "js ts",
+  "legacyWatch": true
+}
