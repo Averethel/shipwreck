@@ -1,7 +1,8 @@
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 
-import { SocketContext } from '@components/contexts/socket';
+import useSocket from '@components/hooks/useSocket';
+import useEventListener from '@components/hooks/useEventListener';
 
 type Props = {
   gameId: string;
@@ -9,18 +10,8 @@ type Props = {
 
 const Game: NextPage<Props> = ({ gameId }) => {
   const [input, setInput] = useState('');
-  const { socket } = useContext(SocketContext);
-
-  useEffect(() => {
-    socket?.on(`updateInput.${gameId}`, (msg) => {
-      setInput(msg);
-    });
-
-    return () => {
-      socket?.off(`updateInput.${gameId}`);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameId, !!socket]);
+  const socket = useSocket();
+  useEventListener(`updateInput.${gameId}`, setInput, [gameId]);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target?.value);
