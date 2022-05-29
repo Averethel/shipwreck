@@ -1,8 +1,7 @@
-import { connect, Socket } from 'socket.io-client';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 
-let socket: Socket;
+import { SocketContext } from '@components/contexts/socket';
 
 type Props = {
   gameId: string;
@@ -10,21 +9,22 @@ type Props = {
 
 const Game: NextPage<Props> = ({ gameId }) => {
   const [input, setInput] = useState('');
-  useEffect(() => {
-    const socketInitializer = async () => {
-      await fetch(`/api/socket`);
-      socket = connect();
-      socket.on(`updateInput.${gameId}`, (msg) => {
-        setInput(msg);
-      });
-    };
+  const { socket } = useContext(SocketContext);
 
-    socketInitializer();
-  }, [gameId]);
+  useEffect(() => {
+    socket?.on(`updateInput.${gameId}`, (msg) => {
+      setInput(msg);
+    });
+
+    return () => {
+      socket?.off(`updateInput.${gameId}`);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameId, !!socket]);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target?.value);
-    socket.emit(`inputChange.${gameId}`, e.target.value);
+    socket?.emit(`inputChange.${gameId}`, e.target.value);
   };
 
   return (
